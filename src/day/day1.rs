@@ -11,10 +11,15 @@ struct DistancePair {
 
 pub fn day(settings: &Settings) {
     let input: String = read_input("day1.txt".to_string(), settings).unwrap();
-    println!("Day 1 - Step 1 result: {}", parse_input(&input))
+    let distance_pair = parse_input(&input);
+    println!("Day 1 - Step 1 result: {}", calc_distance(&distance_pair));
+    println!(
+        "Day 1 - Step 2 result: {}",
+        similarity_score(&distance_pair)
+    );
 }
 
-fn parse_input(input: &String) -> i32 {
+fn parse_input(input: &String) -> DistancePair {
     let mut distance_pair: DistancePair = DistancePair {
         origin: Vec::new(),
         destination: Vec::new(),
@@ -33,7 +38,7 @@ fn parse_input(input: &String) -> i32 {
         }
     }
 
-    return calc_distance(&distance_pair);
+    distance_pair
 }
 
 fn calc_distance(distance_list: &DistancePair) -> i32 {
@@ -49,12 +54,27 @@ fn calc_distance(distance_list: &DistancePair) -> i32 {
     return distance;
 }
 
+fn similarity_score(distance_list: &DistancePair) -> i32 {
+    let mut average: i32 = 0;
+    for i in 0..distance_list.origin.len() {
+        let filter: Vec<i32> = distance_list
+            .destination
+            .clone()
+            .into_iter()
+            .filter(|&x| x == distance_list.origin[i])
+            .collect();
+        average += distance_list.origin[i] * filter.len() as i32;
+    }
+
+    average
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn test_example_case() {
+    fn test_day1_step1() {
         let settings = match Settings::new() {
             Ok(settings) => settings,
             Err(e) => {
@@ -63,7 +83,23 @@ mod tests {
             }
         };
         let input: String = read_input("test_day1.txt".to_string(), &settings).unwrap();
-        let distance: i32 = parse_input(&input);
+        let distance_pair: DistancePair = parse_input(&input);
+        let distance: i32 = calc_distance(&distance_pair);
         assert_eq!(distance, 11);
+    }
+
+    #[test]
+    fn test_day1_step2() {
+        let settings = match Settings::new() {
+            Ok(settings) => settings,
+            Err(e) => {
+                eprintln!("Error reading settings: {}", e);
+                std::process::exit(1);
+            }
+        };
+        let input: String = read_input("test_day1.txt".to_string(), &settings).unwrap();
+        let distance_pair: DistancePair = parse_input(&input);
+        let average: i32 = similarity_score(&distance_pair);
+        assert_eq!(average, 31);
     }
 }
