@@ -15,7 +15,7 @@ use crate::day::day1;
 #[command(version, about, long_about = None)]
 struct Cli {
     #[arg[short, long, help = "Set data folder path", default_value = "data/"]]
-    data_dir: Option<PathBuf>,
+    datadir: Option<PathBuf>,
     #[command(subcommand)]
     command: Option<Commands>,
 }
@@ -36,7 +36,7 @@ fn main() {
         }
     };
 
-    if let Some(data_dir) = cli.data_dir.as_deref() {
+    if let Some(data_dir) = cli.datadir.as_deref() {
         settings.datadir = data_dir.display().to_string();
     }
 

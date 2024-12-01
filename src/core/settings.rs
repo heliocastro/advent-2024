@@ -4,6 +4,8 @@
 
 use config::{Config, ConfigError, Environment};
 use serde::Deserialize;
+use std::env;
+use std::path::PathBuf;
 
 #[derive(Deserialize, Debug)]
 #[allow(unused)]
@@ -13,7 +15,12 @@ pub(crate) struct Settings {
 }
 
 fn default_datadir() -> String {
-    "data/".to_string()
+    let mut datadir: PathBuf = env::current_dir().unwrap();
+    datadir.push("data");
+    if cfg!(debug_assertions) {
+        println!("Datadir: {}", datadir.as_path().display().to_string());
+    }
+    datadir.as_path().display().to_string()
 }
 
 impl Settings {
