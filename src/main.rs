@@ -11,6 +11,7 @@ mod day;
 use crate::core::settings::Settings;
 use crate::day::day1;
 use crate::day::day2;
+use crate::day::day3;
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
@@ -27,6 +28,8 @@ enum Commands {
     Day1,
     #[command(about = "Run the day 2")]
     Day2,
+    #[command(about = "Run the day 2")]
+    Day3,
 }
 
 fn main() {
@@ -46,6 +49,7 @@ fn main() {
     match &cli.command {
         Some(Commands::Day1) => day1::day(&settings),
         Some(Commands::Day2) => day2::day(&settings),
+        Some(Commands::Day3) => day3::day(&settings),
         None => {
             eprintln!("You not specifiedthe day");
             std::process::exit(1);
