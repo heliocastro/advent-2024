@@ -9,18 +9,19 @@ use crate::core::utils::print_result;
 
 pub fn day(settings: &Settings) {
     let input: String = read_input("day3.txt".to_string(), settings).unwrap();
-    let (step1, _) = parse_input(&input);
+    let (step1, step2) = parse_input(&input);
     print_result(3, 1, step1.to_string());
-    // print_result(2, 2, safe_levels_dampener.to_string());
+    print_result(3, 2, step2.to_string());
 }
 
 fn parse_input(input: &String) -> (i32, i32) {
     let mut step1: i32 = 0;
-    let mut step2: i32 = 0;
 
     for line in input.lines() {
         step1 += simple_match(&line);
     }
+
+    let step2: i32 = dont_do(input.replace("\n", "").as_str());
 
     (step1, step2)
 }
@@ -34,6 +35,16 @@ fn simple_match(input: &str) -> i32 {
     }
 
     sum
+}
+
+fn dont_do(input: &str) -> i32 {
+    // Do frst don;t->do
+    let mut re = Regex::new(r"don't\(()\).*?do\(\)").unwrap();
+    let result = re.replace_all(input, "");
+    // Do now dont to end of line
+    re = Regex::new(r"don't\(\).*").unwrap();
+    let result2 = re.replace_all(&result, "");
+    return simple_match(&result2);
 }
 
 #[cfg(test)]
@@ -54,17 +65,17 @@ mod tests {
         assert_eq!(simple_match, 161);
     }
 
-    // #[test]
-    // fn test_day2_step2() {
-    //     let settings = match Settings::new() {
-    //         Ok(settings) => settings,
-    //         Err(e) => {
-    //             eprintln!("Error reading settings: {}", e);
-    //             std::process::exit(1);
-    //         }
-    //     };
-    //     let input: String = read_input("test_day2.txt".to_string(), &settings).unwrap();
-    //     let (_, safe_levels_dampener) = parse_input(&input);
-    //     assert_eq!(safe_levels_dampener, 4);
-    // }
+    #[test]
+    fn test_day3_step2() {
+        let settings = match Settings::new() {
+            Ok(settings) => settings,
+            Err(e) => {
+                eprintln!("Error reading settings: {}", e);
+                std::process::exit(1);
+            }
+        };
+        let input: String = read_input("test_day3_2.txt".to_string(), &settings).unwrap();
+        let (_, dont_do) = parse_input(&input);
+        assert_eq!(dont_do, 48);
+    }
 }
