@@ -6,10 +6,20 @@ use std::{fs, io, path::PathBuf};
 
 use crate::core::settings::Settings;
 
-pub fn read_input(input: String, settings: &Settings) -> Result<String, io::Error> {
-    let mut datadir: PathBuf = PathBuf::from(&settings.datadir);
+pub fn read_input(input: &str, settings: Option<&Settings>) -> Result<String, io::Error> {
+    // Resolve settings: Use provided settings or default
+    let settings = match settings {
+        Some(settings) => settings,
+        None => {
+            // If no settings are provided, use default settings
+            &Settings::default()
+        }
+    };
+
     // Add the input file to the data directory
+    let mut datadir: PathBuf = PathBuf::from(&settings.datadir);
     datadir.push(input);
+
     if cfg!(debug_assertions) {
         println!(
             "Input requested: {}",

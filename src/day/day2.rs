@@ -12,7 +12,7 @@ enum Direction {
 }
 
 pub fn day(settings: &Settings) {
-    let input: String = read_input("day2.txt".to_string(), settings).unwrap();
+    let input: String = read_input("day2.txt", Some(&settings)).unwrap();
     let (safe_levels, safe_levels_dampener) = parse_input(&input);
     print_result(2, 1, safe_levels.to_string());
     print_result(2, 2, safe_levels_dampener.to_string());
@@ -94,28 +94,14 @@ mod tests {
 
     #[test]
     fn test_day2_step1() {
-        let settings = match Settings::new() {
-            Ok(settings) => settings,
-            Err(e) => {
-                eprintln!("Error reading settings: {}", e);
-                std::process::exit(1);
-            }
-        };
-        let input: String = read_input("test_day2.txt".to_string(), &settings).unwrap();
+        let input: String = read_input("test_day2.txt", None).unwrap();
         let (safe_levels, _) = parse_input(&input);
         assert_eq!(safe_levels, 2);
     }
 
     #[test]
     fn test_day2_step2() {
-        let settings = match Settings::new() {
-            Ok(settings) => settings,
-            Err(e) => {
-                eprintln!("Error reading settings: {}", e);
-                std::process::exit(1);
-            }
-        };
-        let input: String = read_input("test_day2.txt".to_string(), &settings).unwrap();
+        let input: String = read_input("test_day2.txt", None).unwrap();
         let (_, safe_levels_dampener) = parse_input(&input);
         assert_eq!(safe_levels_dampener, 4);
     }

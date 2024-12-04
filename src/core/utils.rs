@@ -14,3 +14,5 @@ pub fn print_result(day: i16, step: i16, result: String) {
         result.green().bold()
     );
 }
+
+

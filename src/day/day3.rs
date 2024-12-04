@@ -8,7 +8,7 @@ use crate::core::settings::Settings;
 use crate::core::utils::print_result;
 
 pub fn day(settings: &Settings) {
-    let input: String = read_input("day3.txt".to_string(), settings).unwrap();
+    let input: String = read_input("day3.txt", Some(&settings)).unwrap();
     let (step1, step2) = parse_input(&input);
     print_result(3, 1, step1.to_string());
     print_result(3, 2, step2.to_string());
@@ -53,28 +53,14 @@ mod tests {
 
     #[test]
     fn test_day3_step1() {
-        let settings = match Settings::new() {
-            Ok(settings) => settings,
-            Err(e) => {
-                eprintln!("Error reading settings: {}", e);
-                std::process::exit(1);
-            }
-        };
-        let input: String = read_input("test_day3.txt".to_string(), &settings).unwrap();
+        let input: String = read_input("test_day3.txt", None).unwrap();
         let (simple_match, _) = parse_input(&input);
         assert_eq!(simple_match, 161);
     }
 
     #[test]
     fn test_day3_step2() {
-        let settings = match Settings::new() {
-            Ok(settings) => settings,
-            Err(e) => {
-                eprintln!("Error reading settings: {}", e);
-                std::process::exit(1);
-            }
-        };
-        let input: String = read_input("test_day3_2.txt".to_string(), &settings).unwrap();
+        let input: String = read_input("test_day3_2.txt", None).unwrap();
         let (_, dont_do) = parse_input(&input);
         assert_eq!(dont_do, 48);
     }

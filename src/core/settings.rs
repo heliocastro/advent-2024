@@ -30,4 +30,11 @@ impl Settings {
             .build()?;
         s.try_deserialize()
     }
+    
+    pub(crate) fn default() -> Self {
+        // Provide default behavior by calling the default function on `datadir`
+        Settings {
+            datadir: default_datadir(),
+        }
+    }
 }

@@ -10,7 +10,7 @@ struct DistancePair {
 }
 
 pub fn day(settings: &Settings) {
-    let input: String = read_input("day1.txt".to_string(), settings).unwrap();
+    let input: String = read_input("day1.txt", Some(&settings)).unwrap();
     let distance_pair = parse_input(&input);
     println!("Day 1 - Step 1 result: {}", calc_distance(&distance_pair));
     println!(
@@ -75,14 +75,7 @@ mod tests {
 
     #[test]
     fn test_day1_step1() {
-        let settings = match Settings::new() {
-            Ok(settings) => settings,
-            Err(e) => {
-                eprintln!("Error reading settings: {}", e);
-                std::process::exit(1);
-            }
-        };
-        let input: String = read_input("test_day1.txt".to_string(), &settings).unwrap();
+        let input: String = read_input("test_day1.txt", None).unwrap();
         let distance_pair: DistancePair = parse_input(&input);
         let distance: i32 = calc_distance(&distance_pair);
         assert_eq!(distance, 11);
@@ -90,14 +83,7 @@ mod tests {
 
     #[test]
     fn test_day1_step2() {
-        let settings = match Settings::new() {
-            Ok(settings) => settings,
-            Err(e) => {
-                eprintln!("Error reading settings: {}", e);
-                std::process::exit(1);
-            }
-        };
-        let input: String = read_input("test_day1.txt".to_string(), &settings).unwrap();
+        let input: String = read_input("test_day1.txt", None).unwrap();
         let distance_pair: DistancePair = parse_input(&input);
         let average: i32 = similarity_score(&distance_pair);
         assert_eq!(average, 31);
