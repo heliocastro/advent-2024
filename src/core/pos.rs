@@ -14,7 +14,7 @@ pub enum Direction {
     DownRight,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Pos {
     pub x: isize,
     pub y: isize,
