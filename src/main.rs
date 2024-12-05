@@ -57,7 +57,7 @@ fn main() {
         Some(Commands::Day2) => day2::day(&settings),
         Some(Commands::Day3) => day3::day(&settings),
         Some(Commands::Day4) => day4::day(&settings),
-        Some(Commands::Day5) => day4::day(&settings),
+        Some(Commands::Day5) => day5::day(&settings),
         None => {
             eprintln!("You not specifiedthe day");
             std::process::exit(1);
