@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: GPL-2.0
 
 use config::{Config, ConfigError, Environment};
+use log::debug;
 use serde::Deserialize;
 use std::env;
 use std::path::PathBuf;
@@ -17,9 +18,7 @@ pub(crate) struct Settings {
 fn default_datadir() -> String {
     let mut datadir: PathBuf = env::current_dir().unwrap();
     datadir.push("data");
-    if cfg!(debug_assertions) {
-        println!("Datadir: {}", datadir.as_path().display().to_string());
-    }
+    debug!("Datadir: {}", datadir.as_path().display().to_string());
     datadir.as_path().display().to_string()
 }
 
@@ -30,7 +29,7 @@ impl Settings {
             .build()?;
         s.try_deserialize()
     }
-    
+
     pub(crate) fn default() -> Self {
         // Provide default behavior by calling the default function on `datadir`
         Settings {

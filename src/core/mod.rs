@@ -3,6 +3,6 @@
 // SPDX-License-Identifier: GPL-2.0
 
 pub mod data;
+pub mod pos;
 pub mod settings;
 pub mod utils;
-pub mod pos;

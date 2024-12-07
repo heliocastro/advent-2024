@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-2.0
 
+use log::info;
 use std::{fs, io, path::PathBuf};
 
 use crate::core::settings::Settings;
@@ -21,7 +22,7 @@ pub fn read_input(input: &str, settings: Option<&Settings>) -> Result<String, io
     datadir.push(input);
 
     if cfg!(debug_assertions) {
-        println!(
+        info!(
             "Input requested: {}",
             datadir.as_path().display().to_string()
         );

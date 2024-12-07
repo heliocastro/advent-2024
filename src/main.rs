@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: GPL-2.0
 
 use clap::{Parser, Subcommand};
+use log::{error, info};
 use std::path::PathBuf;
 
 mod core;
@@ -40,10 +41,14 @@ enum Commands {
 
 fn main() {
     let cli = Cli::parse();
+
+    // Init logger
+    env_logger::init();
+
     let mut settings = match Settings::new() {
         Ok(settings) => settings,
         Err(e) => {
-            eprintln!("Error reading settings: {}", e);
+            error!("Error reading settings: {}", e);
             std::process::exit(1);
         }
     };
@@ -52,6 +57,8 @@ fn main() {
         settings.datadir = data_dir.display().to_string();
     }
 
+    info!("Attempt to run Advent of Code 2024...");
+
     match &cli.command {
         Some(Commands::Day1) => day1::day(&settings),
         Some(Commands::Day2) => day2::day(&settings),
@@ -59,7 +66,7 @@ fn main() {
         Some(Commands::Day4) => day4::day(&settings),
         Some(Commands::Day5) => day5::day(&settings),
         None => {
-            eprintln!("You not specifiedthe day");
+            error!("You not specified the day");
             std::process::exit(1);
         }
     }
