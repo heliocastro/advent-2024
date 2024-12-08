@@ -2,6 +2,8 @@
 //
 // SPDX-License-Identifier: GPL-2.0
 
+use log::debug;
+
 #[derive(Debug, Clone, Copy)]
 pub enum Direction {
     Up,
@@ -14,7 +16,7 @@ pub enum Direction {
     DownRight,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Default, Debug, Clone, Copy, PartialEq)]
 pub struct Pos {
     pub x: isize,
     pub y: isize,
@@ -43,6 +45,20 @@ impl Pos {
         use Direction::*;
         &[Up, Down, Left, Right, UpLeft, UpRight, DownLeft, DownRight]
         // &[Right, Left, Down, Right]
+    }
+
+    pub fn from_matrix<T>(matrix: &Vec<Vec<T>>, pos: Pos) -> Result<T, String>
+    where
+        T: Clone + Copy,
+    {
+        if pos.y < 0
+            || pos.y >= matrix.len() as isize
+            || pos.x < 0
+            || pos.x >= matrix[0].len() as isize
+        {
+            return Err(format!("Out of matrix boundary: {:?}.", pos));
+        }
+        Ok(matrix[pos.y as usize][pos.x as usize])
     }
 }
 

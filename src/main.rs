@@ -15,6 +15,7 @@ use crate::day::day2;
 use crate::day::day3;
 use crate::day::day4;
 use crate::day::day5;
+use crate::day::day6;
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
@@ -37,6 +38,8 @@ enum Commands {
     Day4,
     #[command(about = "Run the day 5")]
     Day5,
+    #[command(about = "Run the day 6")]
+    Day6,
 }
 
 fn main() {
@@ -65,6 +68,7 @@ fn main() {
         Some(Commands::Day3) => day3::day(&settings),
         Some(Commands::Day4) => day4::day(&settings),
         Some(Commands::Day5) => day5::day(&settings),
+        Some(Commands::Day6) => day6::day(&settings),
         None => {
             error!("You not specified the day");
             std::process::exit(1);
