@@ -2,9 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-2.0
 
-use log::debug;
-
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Direction {
     Up,
     Down,

@@ -1,10 +1,11 @@
 // SPDX-FileCopyrightText: 2024 Helio Chissini de Castro
 //
 // SPDX-License-Identifier: GPL-2.0
-use crate::core::data::read_input;
-use crate::core::pos::{Direction, Pos};
 use crate::core::settings::Settings;
-use crate::core::utils::print_result;
+use crate::utils::data::read_input;
+use crate::utils::print::print_result;
+use advent::pos::{Direction, Pos};
+use advent::walked::Walked;
 use log::{debug, info};
 
 pub fn day(settings: &Settings) {
@@ -23,7 +24,7 @@ pub fn process_data(input: &str) -> (usize, usize) {
     let mut pos: Pos = Pos::new(0, 0);
     let mut sight: Direction = Direction::Right;
     let mut step1: usize = 0;
-    let step2: usize = 0;
+    let mut step2: usize = 0;
 
     for line in input.lines() {
         let current: Vec<char> = line.chars().collect();
@@ -35,27 +36,38 @@ pub fn process_data(input: &str) -> (usize, usize) {
         }
     }
 
-    let mut walked: Vec<Pos> = Vec::new();
+    let original_pos = pos.clone();
+    let original_sight = sight.clone();
+
+    let mut walked: Vec<Walked> = Vec::new();
     loop {
-        if !move_on(&labmap, &mut pos, &mut sight, &mut walked, &mut step1) {
+        if !move_on(&labmap, &mut pos, &mut sight, &mut walked, &mut step1, None) {
             break;
         }
     }
 
     for (rindex, row) in labmap.iter().enumerate() {
-        for (cindex, column) in row.iter().enumerate() {
+        for (cindex, _) in row.iter().enumerate() {
+            info!("{}{}", rindex, cindex);
             let mut loop_matrix = labmap.clone();
-            let loop_pos = Pos::new(rindex as isize, cindex as isize);
-            match Pos::from_matrix(&loop_matrix, loop_pos) {
-                Ok(value) => {
-                    if value != '#' && pos != loop_pos {
-                        loop_matrix[rindex][cindex] = '#';
-                    }
+            pos = original_pos;
+            sight = original_sight;
+            walked.clear();
+
+            loop_matrix[cindex][rindex] = '#';
+            loop {
+                if !move_on(
+                    &loop_matrix,
+                    &mut pos,
+                    &mut sight,
+                    &mut walked,
+                    &mut step2,
+                    Some(true),
+                ) {
+                    break;
                 }
-                Err(_) => continue,
             }
         }
-        println!();
     }
 
     (step1, step2)
@@ -65,12 +77,20 @@ fn move_on(
     labmap: &Vec<Vec<char>>,
     pos: &mut Pos,
     sight: &mut Direction,
-    walked: &mut Vec<Pos>,
+    walked: &mut Vec<Walked>,
     step: &mut usize,
+    check_on_loop: Option<bool>,
 ) -> bool {
+    let onloop = check_on_loop.unwrap_or(false);
+    let mut walked_on = Walked {
+        walked: *pos,
+        direction: None,
+    }; // We already passed this point
     match Pos::from_matrix(labmap, pos.move_dir(*sight)) {
         Ok(value) => {
             if value == '#' {
+                walked_on.walked = pos.move_dir(*sight);
+                walked_on.direction = Some(*sight);
                 match sight {
                     Direction::Right => *sight = Direction::Down,
                     Direction::Down => *sight = Direction::Left,
@@ -78,13 +98,24 @@ fn move_on(
                     Direction::Up => *sight = Direction::Right,
                     _ => {}
                 }
+                if onloop {
+                    if !walked.contains(&walked_on) {
+                        walked.push(walked_on);
+                        debug!("Added blocker {:?}", walked_on);
+                    } else {
+                        *step += 1;
+                        return false;
+                    }
+                }
+
                 debug!("Direction: {:?}, Pos: {:?}", sight, pos);
             } else {
-                // We already passed this point
-                if !walked.contains(pos) {
-                    walked.push(*pos);
-                    *step += 1;
-                    debug!("Walked: {:?}", walked);
+                if !onloop {
+                    if !walked.contains(&walked_on) {
+                        walked.push(walked_on);
+                        debug!("Added {:?}", walked_on);
+                        *step += 1;
+                    }
                 }
                 *pos = pos.move_dir(*sight);
             }
@@ -93,8 +124,11 @@ fn move_on(
         }
         Err(e) => {
             debug!("Error: {}", e);
-            info!("End of the line. too next step !");
-            *step += 1;
+            // if check on loop, this should always return true;
+            if !onloop {
+                *step += 1;
+            }
+
             return false;
         }
     }
@@ -124,18 +158,18 @@ mod tests {
     }
 
     #[test]
-    fn test_day6_step1() {
+    fn day6_step1() {
         init();
         let input: String = read_input("test_day6.txt", None).unwrap();
         let (result, _) = process_data(&input);
         assert_eq!(result, 41);
     }
 
-    // #[test]
-    // fn test_day5_step2() {
-    //     init();
-    //     let input: String = read_input("test_day5.txt", None).unwrap();
-    //     let (_, result) = process_data(&input);
-    //     assert_eq!(result, 123);
-    // }
+    #[test]
+    fn day6_step2() {
+        init();
+        let input: String = read_input("test_day6.txt", None).unwrap();
+        let (_, result) = process_data(&input);
+        assert_eq!(result, 6);
+    }
 }

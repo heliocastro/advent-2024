@@ -8,6 +8,7 @@ use std::path::PathBuf;
 
 mod core;
 mod day;
+mod utils;
 
 use crate::core::settings::Settings;
 use crate::day::day1;

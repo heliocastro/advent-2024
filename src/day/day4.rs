@@ -2,10 +2,10 @@
 //
 // SPDX-License-Identifier: GPL-2.0
 
-use crate::core::data::read_input;
-use crate::core::pos::{Direction, FromUsize, Pos};
 use crate::core::settings::Settings;
-use crate::core::utils::print_result;
+use crate::utils::data::read_input;
+use crate::utils::print::print_result;
+use advent::pos::{Direction, FromUsize, Pos};
 
 pub fn day(settings: &Settings) {
     let input: String = read_input("day4.txt", Some(&settings)).unwrap();
@@ -134,7 +134,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_day4_step1() {
+    fn day4_step1() {
         let input: String = read_input("test_day4.txt", None).unwrap();
         let matrix = create_matrix(input.as_str());
 
@@ -143,7 +143,7 @@ mod tests {
     }
 
     #[test]
-    fn test_day4_step2() {
+    fn day4_step2() {
         let input: String = read_input("test_day4.txt", None).unwrap();
         let matrix = create_matrix(input.as_str());
 

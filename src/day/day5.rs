@@ -1,9 +1,9 @@
 // SPDX-FileCopyrightText: 2024 Helio Chissini de Castro
 //
 // SPDX-License-Identifier: GPL-2.0
-use crate::core::data::read_input;
+use crate::utils::data::read_input;
 use crate::core::settings::Settings;
-use crate::core::utils::print_result;
+use crate::utils::print::print_result;
 use log::{debug, info};
 
 pub fn day(settings: &Settings) {
@@ -85,7 +85,7 @@ mod tests {
     }
 
     #[test]
-    fn test_day5_step1() {
+    fn day5_step1() {
         init();
         let input: String = read_input("test_day5.txt", None).unwrap();
         let (result, _) = process_data(&input);
@@ -93,7 +93,7 @@ mod tests {
     }
 
     #[test]
-    fn test_day5_step2() {
+    fn day5_step2() {
         init();
         let input: String = read_input("test_day5.txt", None).unwrap();
         let (_, result) = process_data(&input);
