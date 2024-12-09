@@ -42,6 +42,22 @@ pub fn process_data(input: &str) -> (usize, usize) {
         }
     }
 
+    for (rindex, row) in labmap.iter().enumerate() {
+        for (cindex, column) in row.iter().enumerate() {
+            let mut loop_matrix = labmap.clone();
+            let loop_pos = Pos::new(rindex as isize, cindex as isize);
+            match Pos::from_matrix(&loop_matrix, loop_pos) {
+                Ok(value) => {
+                    if value != '#' && pos != loop_pos {
+                        loop_matrix[rindex][cindex] = '#';
+                    }
+                }
+                Err(_) => continue,
+            }
+        }
+        println!();
+    }
+
     (step1, step2)
 }
 
