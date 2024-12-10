@@ -1,9 +1,9 @@
 // SPDX-FileCopyrightText: 2024 Helio Chissini de Castro
 //
 // SPDX-License-Identifier: GPL-2.0
-use crate::core::data::read_input;
 use crate::core::settings::Settings;
-use crate::core::utils::print_result;
+use crate::utils::data::read_input;
+use crate::utils::print::print_result;
 
 enum Direction {
     Neutral,
@@ -93,14 +93,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_day2_step1() {
+    fn day2_step1() {
         let input: String = read_input("test_day2.txt", None).unwrap();
         let (safe_levels, _) = parse_input(&input);
         assert_eq!(safe_levels, 2);
     }
 
     #[test]
-    fn test_day2_step2() {
+    fn day2_step2() {
         let input: String = read_input("test_day2.txt", None).unwrap();
         let (_, safe_levels_dampener) = parse_input(&input);
         assert_eq!(safe_levels_dampener, 4);

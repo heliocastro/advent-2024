@@ -3,9 +3,9 @@
 // SPDX-License-Identifier: GPL-2.0
 use regex::Regex;
 
-use crate::core::data::read_input;
+use crate::utils::data::read_input;
 use crate::core::settings::Settings;
-use crate::core::utils::print_result;
+use crate::utils::print::print_result;
 
 pub fn day(settings: &Settings) {
     let input: String = read_input("day3.txt", Some(&settings)).unwrap();
@@ -52,14 +52,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_day3_step1() {
+    fn day3_step1() {
         let input: String = read_input("test_day3.txt", None).unwrap();
         let (simple_match, _) = parse_input(&input);
         assert_eq!(simple_match, 161);
     }
 
     #[test]
-    fn test_day3_step2() {
+    fn day3_step2() {
         let input: String = read_input("test_day3_2.txt", None).unwrap();
         let (_, dont_do) = parse_input(&input);
         assert_eq!(dont_do, 48);

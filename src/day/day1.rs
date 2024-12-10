@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2024 Helio Chissini de Castro
 //
 // SPDX-License-Identifier: GPL-2.0
-use crate::core::data::read_input;
+use crate::utils::data::read_input;
 use crate::core::settings::Settings;
 
 struct DistancePair {
@@ -74,7 +74,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_day1_step1() {
+    fn day1_step1() {
         let input: String = read_input("test_day1.txt", None).unwrap();
         let distance_pair: DistancePair = parse_input(&input);
         let distance: i32 = calc_distance(&distance_pair);
@@ -82,7 +82,7 @@ mod tests {
     }
 
     #[test]
-    fn test_day1_step2() {
+    fn day1_step2() {
         let input: String = read_input("test_day1.txt", None).unwrap();
         let distance_pair: DistancePair = parse_input(&input);
         let average: i32 = similarity_score(&distance_pair);
