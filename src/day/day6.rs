@@ -11,8 +11,6 @@ use log::{debug, info};
 pub fn day(settings: &Settings) {
     let input: String = read_input("day6.txt", Some(&settings)).unwrap();
 
-    info!("TODO ! {}", input.len());
-
     let (step1, step2) = process_data(&input);
 
     print_result(6, 1, step1.to_string());
